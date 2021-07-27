@@ -1,20 +1,21 @@
 #include "SaarDataHandler.h"
 
-/*******************************************
-  Version 1.0
+/******************************************
+  SaarDataHandler.h   Version 1.05
   by Randall Kent Whited
   rkwhited@gmail.com
   --------------------------------
   This is a modification of the
   TEOS-10 file "gsw_saar_data.c"
   as adapted from the TEOS-10
-  C version 3.05 http://www.teos-10.org
+  C version 3.05 located online
+  (http://www.teos-10.org)
   -------------------------------------
   Most of the data is now in the .h
   files listed below in #include lists
   ---------------------------------------
   All copyrights and all license issues
-  are the same as for the C version
+  are the same as for prior versions
 *******************************************/
 
 /** "mapping" arrays & struct */
@@ -627,12 +628,15 @@ SaarDataHandler::~SaarDataHandler()
 {
 }
 
-/************************************
-    method to access "p_ref" data
+/**
+==========================================================================
+  method: get_p_ref(pos)
+==========================================================================
+    Accesses "p_ref" array data (in this file).
     ---------------------------
-    It does not allow segment faults
-    due to out-of-bounds calls.
-*************************************/
+    It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 const double SaarDataHandler::get_p_ref(unsigned pos)
 {
     double rval = SAAR_ERROR_LIMIT;
@@ -645,12 +649,15 @@ const double SaarDataHandler::get_p_ref(unsigned pos)
     return rval;
 }
 
-/*************************************
-    method to access "lats_ref" data
+/**
+==========================================================================
+  method: get_lats_ref(pos)
+==========================================================================
+    Calculates latitude value using the formula below.
     ---------------------------
-    It does not allow segment faults
-    due to out-of-bounds calls.
-**************************************/
+    It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 const double SaarDataHandler::get_lats_ref(unsigned pos)
 {
    double rval = SAAR_ERROR_LIMIT;
@@ -665,12 +672,15 @@ const double SaarDataHandler::get_lats_ref(unsigned pos)
     return rval;
 }
 
-/**************************************
-    method to access "longs_ref" data
+/**
+==========================================================================
+  method: get_longs_ref(pos)
+==========================================================================
+    Calculates longitude value using the formula below
     ---------------------------
-    It does not allow segment faults
-    due to out-of-bounds calls.
-***************************************/
+    It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 const double SaarDataHandler::get_longs_ref(unsigned pos)
 {
     double rval = SAAR_ERROR_LIMIT;
@@ -683,12 +693,16 @@ const double SaarDataHandler::get_longs_ref(unsigned pos)
     return rval;
 }
 
-/************************************
-    method to access "saar_ref" data
+/**
+============================================================================
+  method: get_saar_ref(pos)
+============================================================================
+    Calls the method "getSaarValue", a method which finds a value through
+    several look-up algorithms that navigate VLAs (very large arrays).
     ---------------------------
-    It does not allow segment faults
-    due to out-of-bounds calls.
-*************************************/
+    It does not allow segment faults due to out-of-bounds calls.
+----------------------------------------------------------------------------
+*/
 const double SaarDataHandler::get_saar_ref(unsigned pos)
 {
     double rval = SAAR_ERROR_LIMIT;
@@ -701,12 +715,15 @@ const double SaarDataHandler::get_saar_ref(unsigned pos)
     return rval;
 }
 
-/**************************************
-    method to access "ndepth_ref" data
+/**
+==========================================================================
+  method: get_ndepth_ref(pos)
+==========================================================================
+    Access "ndepth_ref" array data.
     ---------------------------
-    It does not allow segment faults
-    due to out-of-bounds calls.
-***************************************/
+    It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 const double SaarDataHandler::get_ndepth_ref(unsigned pos)
 {
     double rval = SAAR_ERROR_LIMIT;
@@ -719,12 +736,16 @@ const double SaarDataHandler::get_ndepth_ref(unsigned pos)
     return rval;
 }
 
-/****************************************
-    method to access "delta_sa_ref" data
+/**
+==========================================================================
+  method: get_delta_sa_ref(pos)
+==========================================================================
+    Calls the method "getDeltaSaValue" which is a specialized method for
+    accessing the "delta_sa_ref" array.
     ---------------------------
-    It does not allow segment faults
-    due to out-of-bounds calls.
-*****************************************/
+    It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 const double SaarDataHandler::get_delta_sa_ref(unsigned pos)
 {
     double rval = SAAR_ERROR_LIMIT;
@@ -737,7 +758,21 @@ const double SaarDataHandler::get_delta_sa_ref(unsigned pos)
     return rval;
 }
 
-/** calculate the data position offset within an array */
+/**
+==========================================================================
+  method: getOffset(arrayNumber, isSaar)
+==========================================================================
+    Various methods use several algorithms to calculate the position of
+    data in VLAs (very large arrays).
+
+    This is required because the original C code VLAs have been
+    decreased in size.
+
+    This method is one of those assistant algorithms.
+    ---------------------------
+    It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 unsigned SaarDataHandler::getOffset(unsigned arrayNumber, bool isSaar)
 {
    unsigned offset = 0;
@@ -764,19 +799,24 @@ unsigned SaarDataHandler::getOffset(unsigned arrayNumber, bool isSaar)
    return offset;
 }
 
-/**********************************
-   calculate the data position of
-   an array value within a saar
-   or a delta_sa array
+/**
+==========================================================================
+  method: getSaarValue(valpos)
+==========================================================================
+   Calculates the data position of an array element within a "saar"
+   or a "delta_sa" array.
    ------------------------------
-   arraypos is the position in the
-   original (184275 element) array
-***********************************/
+   The parameter "valpos" is the position in the original array which
+   contained 184,275 elements.
+   ---------------------------
+   It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 double SaarDataHandler::getSaarValue(unsigned valpos)
 {
 	double sval = 0.0;
 
-	/** read the "map" of the array */
+	/** read the "map" of the VLA */
 	unsigned arrayNumber = getSaarArrayPos(valpos);
 	ARRAYINFO sinfo = saarArrayInfo[arrayNumber];
 
@@ -804,7 +844,18 @@ double SaarDataHandler::getSaarValue(unsigned valpos)
 	return sval;
 }
 
-/** access the map to the data position within the saar array */
+/**
+==========================================================================
+  method: getSaarArrayPos(valpos)
+==========================================================================
+   Calculates the data position of an array element within a "saar" array.
+   -------------------------------
+   The parameter "valpos" is the position in the C code VLA (very large
+   array) that has been condensed.
+   -------------------------------
+   It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 unsigned SaarDataHandler::getSaarArrayPos(unsigned valPos)
 {
 	unsigned sarrpos = maxSAARCOUNT;
@@ -822,14 +873,17 @@ unsigned SaarDataHandler::getSaarArrayPos(unsigned valPos)
 	return sarrpos;
 }
 
-/**********************************
-   calculate the data position of
-   an array value within a saar
-   or a delta_sa array
-   ------------------------------
-   arraypos is the position in the
-   original (184275 element) array
-***********************************/
+/**
+==========================================================================
+  method: getDeltaSaValue((valpos)
+==========================================================================
+   Calculates the data position of a VLA (very large array) element.
+   -------------------------------
+   The parameter "valpos" is the position in the original VLA.
+   -------------------------------
+   It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 double SaarDataHandler::getDeltaSaValue(unsigned valpos)
 {
 	double dval = 0.0;
@@ -862,7 +916,18 @@ double SaarDataHandler::getDeltaSaValue(unsigned valpos)
 	return dval;
 }
 
-/** access the map to the data position within the deltasa array */
+/**
+==========================================================================
+  method: getDeltaSaArrayPos(valpos)
+==========================================================================
+   Calculates the position of an array value in the "deltaSaArray" array.
+   ----------------------------------
+   The parameter "valpos" is the position in the original C code VLA
+   (very large array).
+   ----------------------------------
+   It does not allow segment faults due to out-of-bounds calls.
+--------------------------------------------------------------------------
+*/
 unsigned SaarDataHandler::getDeltaSaArrayPos(unsigned valPos)
 {
 	unsigned darrpos = maxDELTASACOUNT;

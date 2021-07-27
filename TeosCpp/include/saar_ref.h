@@ -1,8 +1,8 @@
 #ifndef SAAR_REF_H
 #define SAAR_REF_H
 
-/******************************************
-  Version 1.0
+/****************************************
+  Version 1.05
   by Randall Kent Whited
   rkwhited@gmail.com
   ------------------
@@ -17,7 +17,7 @@
   to save space and promote clarity.
   --------------------------------------
   They are now accessed by computations.
-*******************************************/
+*****************************************/
 
 /** 'SaarDataHandler' class declaration */
 #include "SaarDataHandler.h"

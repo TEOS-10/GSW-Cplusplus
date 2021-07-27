@@ -1,8 +1,8 @@
 #ifndef DELTA_SA_REF_H
 #define DELTA_SA_REF_H
 
-/****************************************
-  Version 1.0
+/*****************************************
+  Version 1.05
   by Randall Kent Whited
   rkwhited@gmail.com
   --------------------------------------
@@ -11,7 +11,7 @@
   -------------------------------------
   The numbers in "**nnn*" comments are
   the array numbers in the original.
-  (the are at the end of the segment)
+  (they are at the end of the segment)
   --------------------------------------
   Even numbered locations were groups
   of THE SAME VALUE which were removed

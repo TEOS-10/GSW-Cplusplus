@@ -1,8 +1,8 @@
 #ifndef SAAR_REF_MAP_H
 #define SAAR_REF_MAP_H
 
-/********************************
-  Version 1.0
+/*******************************
+  Version 1.05
   by Randall Kent Whited
   rkwhited@gmail.com
   ------------------
@@ -10,7 +10,7 @@
   "saar_ref"
   array in the original C code.
   -----------------------------
-*********************************/
+********************************/
 
 /** struct definition */
 #include "map_struct.h"

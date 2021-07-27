@@ -2,7 +2,7 @@
 #define GSW_STRUCTS_H_INCLUDED
 
 /****************************************
-  Version 1.0
+  Version 1.05
   by Randall Kent Whited
   rkwhited@gmail.com
   ------------------
@@ -38,7 +38,7 @@ struct GSW_TEOS10_CONSTANTS
 	double  db2pa,rec_db2pa,pa2db,rec_pa2db,
 			  pi,deg2rad,rad2deg,gamma;
 
-	double  gsw_cp0,gsw_t0,gsw_p0,gsw_sso,gsw_sqrtsso,
+	double  gsw_cp0,gsw_cp0neg,gsw_t0,gsw_p0,gsw_sso,gsw_sqrtsso,
 			  gsw_ups, gsw_sfac,offset,gsw_c3515,gsw_soncl,
 			  gsw_valence_factor,gsw_atomic_weight;
 
@@ -54,11 +54,12 @@ struct GSW_TEOS10_CONSTANTS
 		rad2deg = 180.0/pi;
 		gamma = 2.26e-7;
 		gsw_cp0 = 3991.86795711963; /**The "specific heat" for use with Conservative Temperature [J/(kg K)] */
+		gsw_cp0neg = -3991.86795711963; /** negative value of gsw_cp0 */
 		gsw_t0 = 273.15; /**the Celsius zero point [K] */
 		gsw_p0 = 101325.0; /** Absolute Pressure of one standard atmosphere [Pa] */
 		gsw_sso = 35.16504; /** Standard Ocean Reference Salinity [g/kg] */
 		gsw_sqrtsso = 5.930011804372737;
-		gsw_ups = gsw_sso/35.0; /** unit conversion factor for salinities  [g/kg] */
+		gsw_ups = 1.0047154285714286; /** unit conversion factor for salinities  [g/kg] */
 		gsw_sfac = 0.0248826675584615; /** 1/(40*gsw_ups) */
 		offset = 5.971840214030754e-1; /** deltaS*gsw_sfac */
 		gsw_c3515 = 42.9140; /** Conductivity at (SP=35, t_68=15, p=0) [mS/cm] */
@@ -71,7 +72,7 @@ struct GSW_TEOS10_CONSTANTS
 
 struct GSW_SPECVOL_COEFFICIENTS
 {
-   /** 'a' series */
+	/** 'a' series */
 	double  a000,a001,a002,a003,a004,a010,a011,a012,
 			  a013,a020,a021,a022,a030,a031,a032,a040,
 			  a041,a050,a100,a101,a102,a103,a110,a111,
@@ -432,11 +433,11 @@ struct GSW_SPECVOL_COEFFICIENTS
 struct GSW_SP_COEFFICIENTS
 {
 	double  a0,a1,a2,a3,a4,a5,
-      b0,b1,b2,b3,b4,b5,
-      c0,c1,c2,c3,c4,
-      d1,d2,d3,d4,
-      e1,e2,e3,
-      k;
+			  b0,b1,b2,b3,b4,b5,
+			  c0,c1,c2,c3,c4,
+			  d1,d2,d3,d4,
+			  e1,e2,e3,
+			  k;
 
 	/** initialization */
 	void init_GSW_SP_COEFFICIENTS()
@@ -556,11 +557,11 @@ struct GSW_FREEZING_POLY_COEFFICIENTS
 	/** initialization */
 	void init_GSW_FREEZING_POLY_COEFFICIENTS()
 	{
-      /** 'a' series */
-      a = 0.014289763856964; /** a = 0.502500117621 ÷ gsw_sso */
-      /** 'b' series */
+		/** 'a' series */
+		a = 0.014289763856964; /** a = 0.502500117621 ÷ gsw_sso */
+		/** 'b' series */
 		b = 0.057000649899720;
-      /** 'c' series */
+		/** 'c' series */
 		c0  =  0.017947064327968736;
 		c1 =  -6.076099099929818;
 		c2 =   4.883198653547851;
@@ -632,5 +633,7 @@ struct GSW_GIBBS_ICE_COEFFICIENTS
 		g04 = -5.564648690589909e-22;
 	};
 }; /** GSW_GIBBS_ICE_COEFFICIENTS */
+
+
 
 #endif // GSW_STRUCTS_H_INCLUDED

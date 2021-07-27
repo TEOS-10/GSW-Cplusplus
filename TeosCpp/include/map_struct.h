@@ -2,7 +2,7 @@
 #define MAP_STRUCT_H_INCLUDED
 
 /*************************
-   Version 1.0
+   Version 1.05
    by Randall Kent Whited
    rkwhited@gmail.com
 **************************/

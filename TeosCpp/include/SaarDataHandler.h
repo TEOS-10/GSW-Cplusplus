@@ -1,8 +1,8 @@
 #ifndef SAARDATAHANDLER_H
 #define SAARDATAHANDLER_H
 
-/**************************************
-  Version 1.0
+/***************************************
+  Version 1.05
   by Randall Kent Whited
   rkwhited@gmail.com
   ------------------
@@ -43,7 +43,7 @@ const int gsw_nx = 91;
 const int gsw_ny = 45;
 const int gsw_nz = 45;
 
-/***************************************
+/****************************************
    SAAR data-array access by C++
    "getter" methods/member functions
    -------------------------------------
